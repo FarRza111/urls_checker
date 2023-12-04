@@ -2,7 +2,9 @@ import abc
 import csv
 import os
 import requests
+from http import HTTPStatus
 from fake_useragent import UserAgent
+
 
 
 class WebsiteCheckerABC(abc.ABC):
@@ -14,17 +16,23 @@ class WebsiteCheckerABC(abc.ABC):
     def check_website(self):
         pass
 
-
 class WebsiteChecker(WebsiteCheckerABC):
     def __init__(self, website, user_agent):
         self.website = website
         self.user_agent = user_agent
 
     def get_status_description(self, status_code) -> str:
-        try:
-            return requests.status_codes._codes[status_code][0]
-        except KeyError:
-            return f"Status code {status_code} is not known!"
+        for value in HTTPStatus:
+            if value == status_code:
+                description: str = f'({value} {value.name}) {value.description}'
+                return description
+
+        return 'Status code is not known !!!!'
+
+        # try:
+        #     return requests.status_codes._codes[status_code][0]
+        # except KeyError:
+        #     return f"Status code {status_code} is not known!"
 
     def check_website(self):
         try:
