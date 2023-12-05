@@ -4,6 +4,7 @@ import os
 import requests
 from fake_useragent import UserAgent
 from http import HTTPStatus
+import abc
 
 
 class StatusDescriptionStrategy(abc.ABC):
